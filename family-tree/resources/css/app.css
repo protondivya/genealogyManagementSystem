@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    color-scheme: light;
+}
+
+body {
+    background: #f7f3eb;
+    color: #2c2416;
+}
+
+.tree-canvas {
+    cursor: grab;
+    user-select: none;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 1px 1px, #e7e0d4 1px, transparent 0) 0 0 / 24px 24px;
+}
+
+.tree-canvas.dragging {
+    cursor: grabbing;
+}
+
+.person-node {
+    min-width: 160px;
+}

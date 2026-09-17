@@ -1,0 +1,5 @@
+.monkeycode-tmp-files/
+*.sqlite
+*.sqlite-journal
+.env
+.env.backup
