@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToFamily;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Relationship extends Model
 {
+    use BelongsToFamily;
     use SoftDeletes;
 
     public const DIRECTIONAL = ['parent', 'adoptive_parent', 'step_parent', 'guardian'];

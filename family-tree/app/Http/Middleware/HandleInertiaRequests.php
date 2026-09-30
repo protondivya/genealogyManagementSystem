@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Family;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -28,7 +29,8 @@ class HandleInertiaRequests extends Middleware
                 'role' => $family->pivot->role,
             ]);
 
-            $familyId = $request->session()->get('current_family_id');
+            $currentTenant = Family::current();
+            $familyId = $currentTenant?->id ?? $request->session()->get('current_family_id');
             $current = $familyId
                 ? $families->firstWhere('id', $familyId)
                 : $families->first();

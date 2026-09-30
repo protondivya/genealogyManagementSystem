@@ -10,6 +10,12 @@ trait ResolvesFamily
 {
     protected function currentFamily(Request $request): Family
     {
+        $family = Family::current();
+
+        if ($family && $family->hasMember($request->user())) {
+            return $family;
+        }
+
         $user = $request->user();
         $familyId = $request->session()->get('current_family_id');
 
@@ -21,7 +27,7 @@ trait ResolvesFamily
             throw new HttpResponseException(redirect()->route('families.create'));
         }
 
-        $request->session()->put('current_family_id', $family->id);
+        $this->activateFamily($request, $family);
 
         return $family;
     }
@@ -30,9 +36,18 @@ trait ResolvesFamily
     {
         abort_unless($family->hasMember($request->user()), 403);
 
-        $request->session()->put('current_family_id', $family->id);
+        $this->activateFamily($request, $family);
 
         return $family;
+    }
+
+    protected function activateFamily(Request $request, Family $family): void
+    {
+        $request->session()->put('current_family_id', $family->id);
+
+        if (! $family->isCurrent()) {
+            $family->makeCurrent();
+        }
     }
 
     protected function redactLiving(Request $request, Family $family): bool
