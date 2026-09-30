@@ -3,3 +3,4 @@
 *.sqlite-journal
 .env
 .env.backup
+.idea
