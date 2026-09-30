@@ -59,7 +59,7 @@ class FamilyController extends Controller
             return $family;
         });
 
-        $request->session()->put('current_family_id', $family->id);
+        $this->activateFamily($request, $family);
 
         return redirect()->route('dashboard')->with('success', 'Family workspace created. Start by adding yourself.');
     }

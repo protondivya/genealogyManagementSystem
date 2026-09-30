@@ -26,7 +26,7 @@ class TreeController extends Controller
         $root = $rootId ? $people->firstWhere('id', $rootId) : null;
 
         if ($root) {
-            $cacheKey = "tree:{$family->id}:{$family->updated_at}:{$root->id}:{$depth}:".($redact ? 'r' : 'f');
+            $cacheKey = "tree:{$root->id}:{$depth}:".($redact ? 'r' : 'f').":{$family->updated_at}";
             $tree = cache()->remember($cacheKey, 120, fn () => $graph->buildTree($family, $root, $depth, $redact));
         }
 

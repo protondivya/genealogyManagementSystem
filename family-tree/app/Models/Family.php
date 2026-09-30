@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Multitenancy\Concerns\UsesMultitenancyConfig;
+use Spatie\Multitenancy\Contracts\IsTenant;
+use Spatie\Multitenancy\Models\Concerns\ImplementsTenant;
 
-class Family extends Model
+class Family extends Model implements IsTenant
 {
+    use HasFactory;
+    use ImplementsTenant;
+    use UsesMultitenancyConfig;
+
     protected $fillable = [
         'name',
         'description',
@@ -92,5 +100,10 @@ class Family extends Model
     public function isOwner(User $user): bool
     {
         return $this->owner_id === $user->id || $this->roleFor($user) === 'owner';
+    }
+
+    public function getDatabaseName(): string
+    {
+        return (string) config('database.connections.'.config('database.default').'.database');
     }
 }

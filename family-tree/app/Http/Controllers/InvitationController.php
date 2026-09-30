@@ -99,7 +99,7 @@ class InvitationController extends Controller
         }
 
         $invite->update(['accepted_at' => now()]);
-        $request->session()->put('current_family_id', $family->id);
+        $this->activateFamily($request, $family);
         AuditLog::record($family, $request->user(), 'updated', $invite, ['accepted' => true]);
 
         return redirect()->route('dashboard')->with('success', 'Welcome to '.$family->name.'.');
